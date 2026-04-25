@@ -8,6 +8,9 @@
 
 **MicroFormerX** is an end-to-end deep learning pipeline designed to detect and classify microplastic particles from microscopy images — particularly those containing algae. The system combines a **Swin Transformer** and **ConvNeXt** backbone in a fused architecture to classify microplastics into four categories, while also providing explainable AI (XAI) visualizations and microplastic detection inside algae cells.
 
+## Output
+![Output Image](outputs/xai_result12.png)
+
 The project includes:
 
 - Model training & validation
