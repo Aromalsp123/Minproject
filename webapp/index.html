@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MicroPlastic Detector · MicroFormerX</title>
+  <meta name="description" content="AI-powered microplastic detection and classification using MicroFormerX dual-backbone deep learning model." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ─── HEADER ──────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#">
+        <div class="logo-icon">🔬</div>
+        <div>
+          <div class="logo-text">MicroFormerX</div>
+          <div class="logo-sub">Microplastic Intelligence</div>
+        </div>
+      </a>
+      <div class="status-pill" id="status-pill">
+        <span class="status-dot"></span>
+        <span id="status-text">Connecting…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── HERO ─────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-tag">Powered by Swin + ConvNeXt Fusion</div>
+      <h1>Detect &amp; Classify<br>Microplastics Instantly</h1>
+      <p>Upload a microscopy image and let MicroFormerX classify the microplastic type, analyse its morphology, and generate a visual detection overlay — all in seconds.</p>
+    </div>
+  </section>
+
+  <!-- ─── MAIN GRID ─────────────────────────────────────── -->
+  <main class="container">
+    <div class="main-grid">
+
+      <!-- LEFT: Upload -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📤</span> Upload Image</div>
+
+        <div class="upload-zone" id="drop-zone">
+          <span class="upload-icon">🖼️</span>
+          <h3>Drop image here or click to browse</h3>
+          <p>Supports JPG, PNG, TIFF · 224 × 224 recommended</p>
+        </div>
+        <input type="file" id="file-input" accept="image/*" />
+
+        <div class="btn-row mt-16">
+          <button class="btn btn-primary" id="btn-browse">📁 Browse File</button>
+          <button class="btn btn-secondary" id="btn-camera">📷 Camera</button>
+          <button class="btn btn-secondary" id="btn-sample">🧪 Try Sample</button>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-wrap mt-24" id="preview-wrap">
+          <div class="preview-placeholder" id="preview-ph">
+            <span style="font-size:2rem;display:block;margin-bottom:8px;opacity:.3">🖼️</span>
+            Image preview appears here
+          </div>
+          <img id="preview-img" alt="Preview" />
+        </div>
+
+        <!-- Analyse button -->
+        <div class="btn-row mt-16">
+          <button class="btn btn-primary" id="btn-analyse" disabled>
+            <span class="spinner" id="analyse-spinner"></span>
+            <span id="analyse-label">🔍 Analyse Image</span>
+          </button>
+          <button class="btn btn-secondary" id="btn-clear" disabled>✕ Clear</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: Results -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📊</span> Analysis Results</div>
+
+        <!-- Placeholder shown before first analysis -->
+        <div class="placeholder-state" id="results-placeholder">
+          <span class="ph-icon">🧫</span>
+          <p>Upload and analyse an image to see results</p>
+        </div>
+
+        <!-- Results (hidden until ready) -->
+        <div id="results-panel" class="hidden">
+
+          <!-- Badge -->
+          <div class="result-badge" id="result-badge">
+            <span class="badge-icon" id="badge-icon">🔵</span>
+            <div>
+              <div class="badge-class" id="badge-class">–</div>
+              <div class="badge-conf" id="badge-conf">Confidence: –</div>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <div class="tab-row">
+            <button class="tab-btn active" data-tab="confidence" id="tab-conf">Confidence</button>
+            <button class="tab-btn" data-tab="morphology" id="tab-morph">Morphology</button>
+            <button class="tab-btn" data-tab="detection" id="tab-detect">Detection</button>
+          </div>
+
+          <!-- Tab: Confidence bars -->
+          <div class="tab-content active" id="tab-confidence">
+            <div class="confidence-list" id="conf-list"></div>
+          </div>
+
+          <!-- Tab: Morphology -->
+          <div class="tab-content" id="tab-morphology">
+            <div class="morph-grid" id="morph-grid"></div>
+          </div>
+
+          <!-- Tab: Annotated image -->
+          <div class="tab-content" id="tab-detection">
+            <div class="detection-img-wrap" id="detection-wrap">
+              <div class="preview-placeholder">
+                <span style="font-size:1.8rem;display:block;margin-bottom:8px;opacity:.3">🔍</span>
+                Running detection…
+              </div>
+              <img id="detection-img" alt="Annotated detection" />
+            </div>
+          </div>
+
+        </div><!-- /results-panel -->
+      </div>
+
+    </div><!-- /main-grid -->
+
+    <!-- ─── HISTORY ───────────────────────────────────────── -->
+    <section class="history-section" id="history-section">
+      <div class="section-header">
+        <span class="section-title">📂 Recent Analyses</span>
+        <button class="btn btn-secondary" id="btn-clear-history" style="padding:6px 14px;font-size:.78rem;">Clear</button>
+      </div>
+      <div class="history-grid" id="history-grid">
+        <div class="placeholder-state" id="history-ph" style="grid-column:1/-1;padding:28px 0;">
+          <span class="ph-icon">📋</span>
+          <p>No analyses yet</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── CAMERA MODAL ──────────────────────────────────── -->
+  <div class="modal-overlay" id="camera-modal">
+    <div class="modal-box">
+      <div class="modal-title">📷 Camera Capture</div>
+      <video id="camera-video" autoplay playsinline></video>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-cam-cancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-cam-snap">📸 Snap</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TOAST ─────────────────────────────────────────── -->
+  <div class="toast" id="toast"></div>
+
+  <!-- hidden canvas for camera snap -->
+  <canvas id="snap-canvas" class="hidden"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
