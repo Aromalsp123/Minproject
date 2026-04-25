@@ -61,6 +61,9 @@ The project includes:
 ```
 
 ---
+## Datasets
+
+![Output Image](outputs/img.png)
 
 ## Model Architecture
 
