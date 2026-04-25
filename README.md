@@ -356,32 +356,6 @@ All generated artifacts are saved to the `outputs/` directory:
 
 ---
 
-## Hardware Notes
-
-The model is optimized for mid-range GPUs (tested on **RTX 3050**):
-
-- Batch size: 4
-- AMP (Automatic Mixed Precision) enabled
-- Gradient clipping (max_norm=1.0) for transformer stability
-- CPU fallback supported
-
----
-
-## Citation
-
-If you use MicroFormerX in your research, please cite:
-
-```bibtex
-@software{microformerx2025,
-  title = {MicroFormerX: Dual-Backbone Microplastic Classification},
-  author = {Your Name},
-  year = {2025},
-  url = {https://github.com/yourusername/microformerx}
-}
-```
-
----
-
 ## License
 
 This project is released under the MIT License.
